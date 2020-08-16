@@ -46,7 +46,7 @@ router.post('/users/login', async (req, res) => {
 
         res.send({ user, token });
     } catch (err) {
-        res.status(400).send();
+        res.status(400).send('Cannot find user.');
     }
 });
 
