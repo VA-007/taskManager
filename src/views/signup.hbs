@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <section>
+    <div>
+      <form class="login" method="post">
+        <h1 class='signup_title'>
+          Sign Up
+        </h1>
+        <h4>Name:</h4>
+        <input class="name" type="text" name="name">
+        <div class="errors">
+          <p>
+            {{msg1}}
+          </p>
+        </div>
+        <h4>Email:</h4>
+        <input class="email" type="email" name="email">
+        <div class="errors">
+          <p>
+            {{msg2}}
+          </p>
+        </div>
+        <h4>Password:</h4>
+        <input class="pass" type="password" name="password">
+        <div class="errors">
+          <p>
+            {{msg3}}
+          </p>
+        </div>
+        <button type="submit" name="button">Sign Up</button>
+        <a class="signin_link" href="/login">Need to sign in instead?</a>
+        <a class="signin_link" href="/update">Forgot Password?</a>
+      </form>
+    </div>
+  </section>
+</body>
+</html>

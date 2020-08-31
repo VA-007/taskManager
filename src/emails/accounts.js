@@ -2,8 +2,7 @@ const nodemailer = require('nodemailer');
 
 const sendWelcome = async (email, name) => {
     const output = `
-  <h3>Welcome to my task app!</h3>
-  <p>Hi, ${name}! Thanks for checking out this task manager application! Please have a look around and reply to this email with your thoughts and feedback for improvement.</p>
+  <p>Hi, ${name}! Thank you for checking out my task and note manager application! I hope the website is helpful and I encourage you to reply to this email if you have any thoughts on the project or feedback for improvement. Thanks again!</p>
   <p>${process.env.name}<br>${process.env.title}</p>
   `;
 
@@ -22,28 +21,21 @@ const sendWelcome = async (email, name) => {
     });
 
     // send mail with defined transport object
-    await transporter.sendMail(
-        {
-            from: `${process.env.name} <${process.env.email}>`,
-            to: `${name} <${email}>`,
-            subject: 'Welcome!',
-            html: output,
-            text: `Hi, ${name}! Thanks for checking out this task manager application! Please have a look around and reply to this email with your thoughts and feedback for improvement.`,
-        },
-        function (err, data) {
-            if (err) {
-                return console.log('Error:', err);
-            } else {
-                console.log('Email sent!!');
-            }
-        }
-    );
+    await transporter.sendMail({
+        from: `${process.env.name} <${process.env.email}>`,
+        to: `${name} <${email}>`,
+        subject: 'Welcome!',
+        html: output,
+        text: `Hi, ${name}! Thank you for checking out my task and note manager application! I hope the website is helpful and I encourage you to reply to this email if you have any thoughts on the project or feedback for improvement. Thanks again!
+
+        ${process.env.name}
+        ${process.env.title}`,
+    });
 };
 
 const sendGoodbye = async (email, name) => {
     const output = `
-<h3>I'm sorry to see you go!</h3>
-<p>Hi again, ${name}! I urge you to please send a reply letting me know if you have found anything that you think would improve the site or your experience with it. Thanks again!</p>
+<p>Hi again, ${name}! Before you go, I urge you to please send a reply letting me know of anything you've found that you think would improve the site or your experience with it. Thanks again!</p>
 <p>${process.env.name}<br>${process.env.title}</p>
 `;
 
@@ -68,7 +60,10 @@ const sendGoodbye = async (email, name) => {
             to: `${name} <${email}>`,
             subject: 'Can I do better?',
             html: output,
-            text: `Hi again, ${name}! It was so nice to have stop by! If you have found anything that you think would improve the site or your experience with it then I urge you to please send a reply letting me know. Thanks again!`,
+            text: `Hi again, ${name}! Before you go, I urge you to please send a reply letting me know of anything you've found that you think would improve the site or your experience with it. Thanks again!
+            
+            ${process.env.name}
+            ${process.env.title}`,
         },
         function (err, data) {
             if (err) {

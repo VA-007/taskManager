@@ -1,167 +1,172 @@
 const User = require('../models/user');
+const Task = require('../models/task');
+const Note = require('../models/note');
+const bcrypt = require('bcryptjs');
 const auth = require('../middleware/auth');
 const { sendWelcome, sendGoodbye } = require('../emails/accounts');
 
 const express = require('express');
-const multer = require('multer');
-const sharp = require('sharp');
-
-const upload = multer({
-    limits: {
-        fileSize: 1000000,
-    },
-    fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-            return cb(new Error('Please upload an image.'));
-        }
-
-        cb(undefined, true);
-    },
-});
 
 const router = new express.Router();
 
-router.post('/users', async (req, res) => {
-    let user = new User(req.body);
+router.get('/', (req, res) => {
+    res.render('signup');
+});
+
+router.post('/', async (req, res) => {
+    delete req.body.button;
+    const duplicate = await User.find({ email: req.body.email });
 
     try {
-        await user.save();
-        sendWelcome(user.email, user.name);
-        user = await User.findByCredentials(req.body.email, req.body.password);
-        const token = await user.generateAuthToken();
-        res.status(201).send({ user, token });
+        if (duplicate == undefined || duplicate.length < 1) {
+            const user = new User(req.body);
+            const cookie = await user.generateAuthToken();
+            await user.save();
+            const id = user._id;
+            req.session.userId = cookie;
+            sendWelcome(req.body.email, req.body.name);
+            res.redirect(`/home/tasks/?name=${id}`);
+        } else if (duplicate.length > 0) {
+            return res.render('signup', {
+                msg2: 'Email is already in use.',
+            });
+        }
     } catch (err) {
-        res.status(400).send(err);
+        if (err.errors.password) {
+            res.render('signup', {
+                msg3: 'Password is too short.',
+            });
+        } else if (err.errors.email) {
+            res.render('signup', {
+                msg2: 'Email is required.',
+            });
+        } else if (err.errors.name) {
+            res.render('signup', {
+                msg1: 'Name is required.',
+            });
+        }
     }
 });
 
-router.post('/users/login', async (req, res) => {
+router.get('/login', (req, res) => {
+    res.render('login');
+});
+
+router.post('/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(
             req.body.email,
             req.body.password
         );
 
-        const token = await user.generateAuthToken();
-
-        res.send({ user, token });
+        const cookie = await user.generateAuthToken();
+        const id = user._id;
+        req.session.userId = cookie;
+        res.redirect(`/home/tasks/?name=${id}`);
     } catch (err) {
-        res.status(400).send('Cannot find user.');
+        if (err == 'Error: Unable to find user.') {
+            res.render('login', {
+                Error1: err,
+            });
+        } else if (err == 'Error: Password does not match.') {
+            res.render('login', {
+                Error2: err,
+            });
+        }
     }
 });
 
-router.post('/users/logout', auth, async (req, res) => {
+router.get('/deletetask', auth, async (req, res) => {
     try {
-        req.user.tokens = req.user.tokens.filter((token) => {
-            return token.token !== req.token;
+        await Task.deleteOne({ _id: req.query.id });
+        return res.redirect(`/home/tasks/?name=${req.query.name}`);
+    } catch (err) {
+        return res.render('error', {
+            info: err,
         });
-
-        await req.user.save();
-
-        res.send();
-    } catch (err) {
-        res.status(500).send();
     }
 });
 
-router.post('/users/logoutAll', auth, async (req, res) => {
+router.get('/deletenote', auth, async (req, res) => {
     try {
-        req.user.tokens = [];
-        await req.user.save();
-        res.send();
+        await Note.deleteOne({ _id: req.query.id });
+        return res.redirect(`/home/tasks/?name=${req.query.name}`);
     } catch (err) {
-        res.status(500).send();
+        return res.render('error', {
+            info: err,
+        });
     }
 });
 
-router.post(
-    '/users/me/avatar',
-    auth,
-    upload.single('avatar'),
-    async (req, res) => {
-        const buffer = await sharp(req.file.buffer)
-            .resize({ width: 250, height: 250 })
-            .png()
-            .toBuffer();
-        req.user.avatar = buffer;
-        await req.user.save();
-        res.send();
-    },
-    (error, req, res, next) => {
-        res.status(400).send({ error: error.message });
-    }
-);
-
-router.get('/users/me', auth, async (req, res) => {
-    res.send(req.user);
-});
-
-router.get('/users/:id/avatar', async (req, res) => {
+router.get('/deleteuser', auth, async (req, res) => {
+    const user = await User.find({ _id: req.query.name });
     try {
-        const user = await User.findById(req.params.id);
+        sendGoodbye(user[0].email, user[0].name);
+        await User.deleteOne({ _id: req.query.name });
+        return res.redirect('/');
+    } catch (err) {
+        return res.render('error', {
+            info: err,
+        });
+    }
+});
 
-        if (!user || !user.avatar) {
-            throw new Error();
+router.get('/update', (req, res) => {
+    res.render('forgotpassword');
+});
+
+router.post('/update', async (req, res) => {
+    try {
+        const update = await User.find({ email: req.body.email });
+
+        if (update.length < 1 || update == undefined) {
+            throw new Error('Could not find user.');
         }
 
-        res.set('Content-Type', 'image/png');
-        res.send(user.avatar);
+        const id = update[0]._id;
+        if (
+            req.body.password.length >= 7 &&
+            !req.body.password.includes('password')
+        ) {
+            const password = await bcrypt.hash(req.body.password, 8);
+            const user = await User.findByIdAndUpdate(
+                id,
+                {
+                    password,
+                },
+                { new: true }
+            );
+
+            const cookie = await user.generateAuthToken();
+            await user.save();
+            req.session.userId = cookie;
+            return res.redirect(`/home/tasks/?name=${id}`);
+        } else {
+            return res.render('forgotpassword', {
+                Error1:
+                    'Password must be greater than 6 characters long and not include the phrase "password".',
+            });
+        }
     } catch (err) {
-        res.status(404).send();
+        return res.render('forgotpassword', {
+            Error: `${err} Please enter a valid email or signup to create a new account.`,
+        });
     }
 });
 
-router.patch('/users/me', auth, async (req, res) => {
-    const updates = Object.keys(req.body);
-    const allowedUpdates = ['name', 'email', 'password', 'age'];
-    const isValidOperation = updates.every((update) =>
-        allowedUpdates.includes(update)
+router.get('/signout', async (req, res) => {
+    const id = req.query.name;
+    await User.findByIdAndUpdate(
+        id,
+        {
+            tokens: [],
+        },
+        { new: true }
     );
 
-    if (!isValidOperation) {
-        for (let update of updates) {
-            if (
-                update != 'name' &&
-                update != 'email' &&
-                update != 'password' &&
-                update != 'age'
-            ) {
-                return res.status(400).send(`${update} cannot be updated.`);
-            }
-        }
-    }
+    req.session = null;
 
-    try {
-        const user = req.user;
-
-        updates.forEach((update) => (user[update] = req.body[update]));
-
-        await user.save();
-
-        res.send(user);
-    } catch (err) {
-        res.status(400).send(err);
-    }
-});
-
-router.delete('/users/me', auth, async (req, res) => {
-    try {
-        await req.user.remove();
-        sendGoodbye(req.user.email, req.user.name);
-        res.send(req.user.name + "'s profile has been deleted.'");
-    } catch (err) {
-        res.status(500).send();
-    }
-});
-
-router.delete('/users/me/avatar', auth, async (req, res) => {
-    try {
-        req.user.avatar = undefined;
-        await req.user.save();
-        res.send(req.user.name + "'s avatar has been deleted.'");
-    } catch (err) {
-        res.status(500).send();
-    }
+    res.render('signout');
 });
 
 module.exports = router;
