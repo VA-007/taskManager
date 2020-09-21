@@ -9,6 +9,9 @@ const router = new express.Router();
 
 router.post('/home/notes', auth, async (req, res) => {
     const user = await User.findById({ _id: req.query.name });
+    if (req.body.note.length < 1 || req.body.note == undefined) {
+        req.body.note = 'Nothing Was Entered.';
+    }
     const note = new Note({
         note: req.body.note,
         author: user._id,

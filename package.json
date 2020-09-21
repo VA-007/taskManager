@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --require dotenv/config src/app.js",
-    "start": "node src/app.js"
+    "dev": "nodemon --require dotenv/config src/app.js dotenv_config_path=config/.env",
+    "start": "node src/app.js",
+    "test": "jest --watch"
   },
   "keywords": [],
   "author": "Jordan Walters",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
+    "jest": "^26.4.2",
     "nodemon": "^2.0.4"
   }
 }

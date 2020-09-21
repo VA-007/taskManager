@@ -261,6 +261,7 @@ td {
     background-color: lightgrey;
     display: flex;
     width: 20.12vw;
+    min-width: 184.45px;
     height: 52.34px;
     padding: 0 5px;
     margin-bottom: 10px;

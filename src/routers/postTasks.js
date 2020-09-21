@@ -9,6 +9,9 @@ const router = new express.Router();
 
 router.post('/home/tasks', auth, async (req, res) => {
     const user = await User.findById({ _id: req.query.name });
+    if (req.body.description.length < 1 || req.body.description == undefined) {
+        req.body.description = 'Nothing Was Entered.';
+    }
     const task = new Task({
         description: req.body.description,
         author: user._id,

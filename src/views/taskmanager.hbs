@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,189 +9,197 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
   <link rel="stylesheet" href="/css/main.css">
 </head>
+
 <body>
-<nav>
-  <h1>
-    Welcome {{ name }}!
-  </h1>
-</nav>
-<button class='logoutbtn'>Logout</button>
-<button class='delete'>Delete Account</button>
-<button class='instructions'>Features</button>
-<table>
-  <thead>
-    <tr>
-      <th><h3>New Task Or Note</h3></th>
-      <th><h3>All Incomplete Tasks</h3></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class='td'>
-        <div id="task">
-          <form id="task" method="post">
-            <p class="btn1">
-              <input class='taskRadio' type="radio" name="switch" value="task" checked="checked">
-              New Task
-            </p>
-            <p class="btn2">
-              <input class='noteRadio' type="radio" name="switch" value="note">
-              New Note
-            </p>
-            <p hidden class="name">{{ user }}</p>
-            <textarea class='text' name="description" rows="8" cols="80"></textarea>
-            <button type="submit" class="task_submit">Create Task</button>
-          </form>
-        </div>
-      </td>
-      <td class="incompleteGrid">
-        <table class="taskTable">
-          <tr>
-            <th class="taskRow">
-              <div class="tasks_check1">
-                <p class="tasks1">{{ task1 }}<input class="checkbox1" type="checkbox" name="completed"></p>
-                <p hidden class="id">{{ taskId1 }}</p>
-                <p hidden class="name">{{ user }}</p>
-              </div>
-            </th class="taskRow">
-            <th class="taskRow">
-              <div class="tasks_check2">
-                <p class="tasks2">{{ task2 }}<input class="checkbox2" type="checkbox" name="completed"></p>
-                <p hidden class="id">{{ taskId2 }}</p>
-                <p hidden class="name">{{ user }}</p>
-              </div>
-            </th class="taskRow">
-            <th class="taskRow">
-              <div class="tasks_check3">
-                <p class="tasks3">{{ task3 }}<input class="checkbox3" type="checkbox" name="completed"></p>
-                <p hidden class="id">{{ taskId3 }}</p>
-                <p hidden class="name">{{ user }}</p>
-              </div>
-            </th class="taskRow">
-          </tr>
-          <tr>
-            <th class="taskRow">
-              <div class="tasks_check4">
-                <p class="tasks4">{{ task4 }}<input class="checkbox4" type="checkbox" name="completed"></p>
-                <p hidden class="id">{{ taskId4 }}</p>
-                <p hidden class="name">{{ user }}</p>
-              </div>
-            </th class="taskRow">
-            <th class="taskRow">
-              <div class="tasks_check5">
-                <p class="tasks5">{{ task5 }}<input class="checkbox5" type="checkbox" name="completed"></p>
-                <p hidden class="id">{{ taskId5 }}</p>
-                <p hidden class="name">{{ user }}</p>
-              </div>
-            </th class="taskRow">
-            <th class="taskRow">
-              <div class="tasks_check6">
-                <p class="tasks6">{{ task6 }}<input class="checkbox6" type="checkbox" name="completed"></p>
-                <p hidden class="id">{{ taskId6 }}</p>
-                <p hidden class="name">{{ user }}</p>
-              </div>
-            </th class="taskRow">
-          </tr>
-          <tr>
-            <th class="taskRow">
-              <div class="tasks_check7">
-                <p class="tasks7">{{ task7 }}<input class="checkbox7" type="checkbox" name="completed"></p>
-                <p hidden class="id">{{ taskId7 }}</p>
-                <p hidden class="name">{{ user }}</p>
-              </div>
-            </th class="taskRow">
-            <th class="taskRow">
-              <div class="tasks_check8">
-                <p class="tasks8">{{ task8 }}<input class="checkbox8" type="checkbox" name="completed"></p>
-                <p hidden class="id">{{ taskId8 }}</p>
-                <p hidden class="name">{{ user }}</p>
-              </div>
-            </th class="taskRow">
-          </tr>
-        </table>
+  <nav>
+    <h1>
+      Welcome {{ name }}!
+    </h1>
+  </nav>
+  <button class='logoutbtn'>Logout</button>
+  <button class='delete'>Delete Account</button>
+  <button class='instructions'>Features</button>
+  <table>
+    <thead>
+      <tr>
+        <th>
+          <h3>New Task Or Note</h3>
+        </th>
+        <th>
+          <h3>All Incomplete Tasks</h3>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class='td'>
+          <div id="task">
+            <form id="task" method="post">
+              <p class="btn1">
+                <input class='taskRadio' type="radio" name="switch" value="task" checked="checked">
+                New Task
+              </p>
+              <p class="btn2">
+                <input class='noteRadio' type="radio" name="switch" value="note">
+                New Note
+              </p>
+              <p hidden class="name">{{ user }}</p>
+              <textarea placeholder="Enter Your Task" class='text' name="description" rows="8" cols="80"></textarea>
+              <button type="submit" class="task_submit">Create Task</button>
+            </form>
+          </div>
         </td>
-    </tr>
-  </tbody>
-</table>
-<table class='table'>
-  <thead>
-    <tr>
-      <th><h3>All Notes</h3></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class='td1'>
-        <div id="note_1">
-          <div class="task">
-            <i class="fas fa-times icon_1"></i>
-            <p hidden class="id">{{ noteId1 }}</p>
-            <p hidden class="name">{{ user }}</p>
-            <textarea readonly class='text_1' name="note" rows="8" cols="80">{{note1}}</textarea>
+        <td class="incompleteGrid">
+          <table class="taskTable">
+            <tr>
+              <th class="taskRow">
+                <div class="tasks_check1">
+                  <p class="tasks1">{{ task1 }}<input class="checkbox1" type="checkbox" name="completed"></p>
+                  <p hidden class="id">{{ taskId1 }}</p>
+                  <p hidden class="name">{{ user }}</p>
+                </div>
+              </th class="taskRow">
+              <th class="taskRow">
+                <div class="tasks_check2">
+                  <p class="tasks2">{{ task2 }}<input class="checkbox2" type="checkbox" name="completed"></p>
+                  <p hidden class="id">{{ taskId2 }}</p>
+                  <p hidden class="name">{{ user }}</p>
+                </div>
+              </th class="taskRow">
+              <th class="taskRow">
+                <div class="tasks_check3">
+                  <p class="tasks3">{{ task3 }}<input class="checkbox3" type="checkbox" name="completed"></p>
+                  <p hidden class="id">{{ taskId3 }}</p>
+                  <p hidden class="name">{{ user }}</p>
+                </div>
+              </th class="taskRow">
+            </tr>
+            <tr>
+              <th class="taskRow">
+                <div class="tasks_check4">
+                  <p class="tasks4">{{ task4 }}<input class="checkbox4" type="checkbox" name="completed"></p>
+                  <p hidden class="id">{{ taskId4 }}</p>
+                  <p hidden class="name">{{ user }}</p>
+                </div>
+              </th class="taskRow">
+              <th class="taskRow">
+                <div class="tasks_check5">
+                  <p class="tasks5">{{ task5 }}<input class="checkbox5" type="checkbox" name="completed"></p>
+                  <p hidden class="id">{{ taskId5 }}</p>
+                  <p hidden class="name">{{ user }}</p>
+                </div>
+              </th class="taskRow">
+              <th class="taskRow">
+                <div class="tasks_check6">
+                  <p class="tasks6">{{ task6 }}<input class="checkbox6" type="checkbox" name="completed"></p>
+                  <p hidden class="id">{{ taskId6 }}</p>
+                  <p hidden class="name">{{ user }}</p>
+                </div>
+              </th class="taskRow">
+            </tr>
+            <tr>
+              <th class="taskRow">
+                <div class="tasks_check7">
+                  <p class="tasks7">{{ task7 }}<input class="checkbox7" type="checkbox" name="completed"></p>
+                  <p hidden class="id">{{ taskId7 }}</p>
+                  <p hidden class="name">{{ user }}</p>
+                </div>
+              </th class="taskRow">
+              <th class="taskRow">
+                <div class="tasks_check8">
+                  <p class="tasks8">{{ task8 }}<input class="checkbox8" type="checkbox" name="completed"></p>
+                  <p hidden class="id">{{ taskId8 }}</p>
+                  <p hidden class="name">{{ user }}</p>
+                </div>
+              </th class="taskRow">
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <table class='table'>
+    <thead>
+      <tr>
+        <th>
+          <h3>All Notes</h3>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class='td1'>
+          <div id="note_1">
+            <div class="task">
+              <i class="fas fa-times icon_1"></i>
+              <p hidden class="id">{{ noteId1 }}</p>
+              <p hidden class="name">{{ user }}</p>
+              <textarea readonly class='text_1' name="note" rows="8" cols="80">{{note1}}</textarea>
+            </div>
           </div>
-        </div>
-        <div id="note_2">
-          <div class="task">
-            <i class="fas fa-times icon_2"></i>
-            <p hidden class="id">{{ noteId2 }}</p>
-            <p hidden class="name">{{ user }}</p>
-            <textarea readonly class='text_2' name="note" rows="8" cols="80">{{note2}}</textarea>
+          <div id="note_2">
+            <div class="task">
+              <i class="fas fa-times icon_2"></i>
+              <p hidden class="id">{{ noteId2 }}</p>
+              <p hidden class="name">{{ user }}</p>
+              <textarea readonly class='text_2' name="note" rows="8" cols="80">{{note2}}</textarea>
+            </div>
           </div>
-        </div>
-        <div id="note_3">
-          <div class="task">
-            <i class="fas fa-times icon_3"></i>
-            <p hidden class="id">{{ noteId3 }}</p>
-            <p hidden class="name">{{ user }}</p>
-            <textarea readonly class='text_3' name="note" rows="8" cols="80">{{note3}}</textarea>
+          <div id="note_3">
+            <div class="task">
+              <i class="fas fa-times icon_3"></i>
+              <p hidden class="id">{{ noteId3 }}</p>
+              <p hidden class="name">{{ user }}</p>
+              <textarea readonly class='text_3' name="note" rows="8" cols="80">{{note3}}</textarea>
+            </div>
           </div>
-        </div>
-        <div id="note_4">
-          <div class="task">
-            <i class="fas fa-times icon_4"></i>
-            <p hidden class="id">{{ noteId4 }}</p>
-            <p hidden class="name">{{ user }}</p>
-            <textarea readonly class='text_4' name="note" rows="8" cols="80">{{note4}}</textarea>
+          <div id="note_4">
+            <div class="task">
+              <i class="fas fa-times icon_4"></i>
+              <p hidden class="id">{{ noteId4 }}</p>
+              <p hidden class="name">{{ user }}</p>
+              <textarea readonly class='text_4' name="note" rows="8" cols="80">{{note4}}</textarea>
+            </div>
           </div>
-        </div>
-      </td>
-      <td class="td1">
-        <div id="note_5">
-          <div class="task">
-            <i class="fas fa-times icon_5"></i>
-            <p hidden class="id">{{ noteId5 }}</p>
-            <p hidden class="name">{{ user }}</p>
-            <textarea readonly class='text_5' name="note" rows="8" cols="80">{{note5}}</textarea>
+        </td>
+        <td class="td1">
+          <div id="note_5">
+            <div class="task">
+              <i class="fas fa-times icon_5"></i>
+              <p hidden class="id">{{ noteId5 }}</p>
+              <p hidden class="name">{{ user }}</p>
+              <textarea readonly class='text_5' name="note" rows="8" cols="80">{{note5}}</textarea>
+            </div>
           </div>
-        </div>
-        <div id="note_6">
-          <div class="task">
-            <i class="fas fa-times icon_6"></i>
-            <p hidden class="id">{{ noteId6 }}</p>
-            <p hidden class="name">{{ user }}</p>
-            <textarea readonly class='text_6' name="note" rows="8" cols="80">{{note6}}</textarea>
+          <div id="note_6">
+            <div class="task">
+              <i class="fas fa-times icon_6"></i>
+              <p hidden class="id">{{ noteId6 }}</p>
+              <p hidden class="name">{{ user }}</p>
+              <textarea readonly class='text_6' name="note" rows="8" cols="80">{{note6}}</textarea>
+            </div>
           </div>
-        </div>
-        <div id="note_7">
-          <div class="task">
-            <i class="fas fa-times icon_7"></i>
-            <p hidden class="id">{{ noteId7 }}</p>
-            <p hidden class="name">{{ user }}</p>
-            <textarea readonly class='text_7' name="note" rows="8" cols="80">{{note7}}</textarea>
+          <div id="note_7">
+            <div class="task">
+              <i class="fas fa-times icon_7"></i>
+              <p hidden class="id">{{ noteId7 }}</p>
+              <p hidden class="name">{{ user }}</p>
+              <textarea readonly class='text_7' name="note" rows="8" cols="80">{{note7}}</textarea>
+            </div>
           </div>
-        </div>
-        <div id="note_8">
-          <div class="task">
-            <i class="fas fa-times icon_8"></i>
-            <p hidden class="id">{{ noteId8 }}</p>
-            <p hidden class="name">{{ user }}</p>
-            <textarea readonly class='text_8' name="note" rows="8" cols="80">{{note8}}</textarea>
+          <div id="note_8">
+            <div class="task">
+              <i class="fas fa-times icon_8"></i>
+              <p hidden class="id">{{ noteId8 }}</p>
+              <p hidden class="name">{{ user }}</p>
+              <textarea readonly class='text_8' name="note" rows="8" cols="80">{{note8}}</textarea>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<script src="/js/home.js"></script>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <script src="/js/home.js"></script>
 </body>
+
 </html>
